@@ -212,6 +212,8 @@
 // src/components/tabs/FleetDistribution.tsx
 "use client";
 
+
+
 import { useState } from "react";
 import {
   FLEET,
@@ -224,6 +226,7 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { DoughnutChart } from "@/components/ui/DoughnutChart";
 import { FilterBar, FilterSelect, FilterInput } from "@/components/ui/FilterBar";
+import { VEHICLE_COLORS, VehicleBar } from "../ui/vehicleBar";
 
 // Palette for dynamic chart segments
 const CHART_COLORS = [
@@ -231,6 +234,20 @@ const CHART_COLORS = [
   "#E24B4A", "#888780", "#D4A017", "#2E8B57",
 ];
 
+
+const tableHeader=["Customer ID",
+                "Company",
+                "Total",
+                "Cargo Van",
+                "Sprinter",
+                "Box Truck",
+                "Pickup",
+                "Electric",
+                "EV %",
+                "Avg Age",
+                "Telematics",
+                "FMS",
+                "Use Case"]
 interface LegendItemProps {
   color: string;
   label: string;
@@ -343,6 +360,41 @@ export function FleetDistribution() {
         <MetricCard label="Avg Fleet Age" value={`${avgAge}y`} />
       </div>
 
+
+       {/* ---- Vehicle type composition bar (portfolio-level) ---- */}
+      <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm mb-5">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3">
+          Fleet composition
+        </h3>
+        <div className="flex items-center gap-3 mb-2">
+          {[
+            { label: "Cargo", color: VEHICLE_COLORS.cargoVan, val: totalCargo },
+            { label: "Sprinter", color: VEHICLE_COLORS.sprinterVan, val: totalSprinter },
+            { label: "Box Truck", color: VEHICLE_COLORS.boxTruck, val: totalBox },
+            { label: "Pickup", color: VEHICLE_COLORS.pickupTruck, val: totalPickup },
+            { label: "Electric", color: VEHICLE_COLORS.electricVan, val: totalElectric },
+          ].map((v) => (
+            <span key={v.label} className="flex items-center gap-1.5 text-[11px] text-gray-500">
+              <span className="w-2.5 h-2.5 rounded-full" style={{ background: v.color }} />
+              {v.label}{" "}
+              <span className="font-medium text-gray-700">
+                {Math.round((v.val / totalVehicles) * 100)}%
+              </span>
+            </span>
+          ))}
+        </div>
+        <VehicleBar
+          total={totalVehicles}
+          segments={[
+            { value: totalCargo, color: VEHICLE_COLORS.cargoVan, label: "Cargo Van" },
+            { value: totalSprinter, color: VEHICLE_COLORS.sprinterVan, label: "Sprinter Van" },
+            { value: totalBox, color: VEHICLE_COLORS.boxTruck, label: "Box Truck" },
+            { value: totalPickup, color: VEHICLE_COLORS.pickupTruck, label: "Pickup Truck" },
+            { value: totalElectric, color: VEHICLE_COLORS.electricVan, label: "Electric Van" },
+          ]}
+        />
+      </div>
+
       {/* Distribution charts — 3 columns, all derived from data */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ChartWithLegend title="Telematics Providers" counts={telCounts} />
@@ -391,30 +443,21 @@ export function FleetDistribution() {
 
       {/* Fleet table — every column is a real client field */}
       <div className="bg-white border border-gray-200 rounded-lg p-3.5 overflow-x-auto">
-        <h3 className="text-[13px] font-medium text-gray-900 mb-2.5">
-          Fleet by customer
-        </h3>
+        <div className="px-5 pt-5 pb-3">
+          <h3 className="text-sm font-semibold text-gray-900">
+            Fleet by customer
+          </h3>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            {filtered.length} of {FLEET.length} fleets shown
+          </p>
+        </div>
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr>
-              {[
-                "Customer ID",
-                "Company",
-                "Total",
-                "Cargo Van",
-                "Sprinter",
-                "Box Truck",
-                "Pickup",
-                "Electric",
-                "EV %",
-                "Avg Age",
-                "Telematics",
-                "FMS",
-                "Use Case",
-              ].map((h) => (
+              {tableHeader.map((h) => (
                 <th
                   key={h}
-                  className="text-left px-2.5 py-1.75 text-[11px] font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                  className="text-left px-2.5 py-1.75 text-[11px] font-semibold uppercase tracking-wider text-gray-500 border-b border-gray-200 whitespace-nowrap"
                 >
                   {h}
                 </th>
@@ -440,6 +483,16 @@ export function FleetDistribution() {
                   </td>
                   <td className="px-2.5 py-2 border-b border-gray-100">
                     {f.cargoVan}
+                    {/* <VehicleBar
+                        total={f.totalVehicles}
+                        segments={[
+                          { value: f.cargoVan, color: VEHICLE_COLORS.cargoVan, label: "Cargo Van" },
+                          { value: f.sprinterVan, color: VEHICLE_COLORS.sprinterVan, label: "Sprinter" },
+                          { value: f.boxTruck, color: VEHICLE_COLORS.boxTruck, label: "Box Truck" },
+                          { value: f.pickupTruck, color: VEHICLE_COLORS.pickupTruck, label: "Pickup" },
+                          { value: f.electricVan, color: VEHICLE_COLORS.electricVan, label: "Electric" },
+                        ]}
+                      /> */}
                   </td>
                   <td className="px-2.5 py-2 border-b border-gray-100">
                     {f.sprinterVan}

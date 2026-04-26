@@ -165,7 +165,7 @@ export function UsageMetrics() {
 
   // ---- Per-customer trend data ----
   const custData =  getUsageByCustomer(selectedCustId);
-  
+
   const labels = custData.map((u) => u.month); // "Jan-25" etc — already readable
 
   return (
@@ -321,7 +321,7 @@ export function UsageMetrics() {
 
       {/* Data table for selected customer */}
       <div className="bg-white border border-gray-200 rounded-lg p-3.5 mt-4 overflow-x-auto">
-        <h3 className="text-[13px] font-medium text-gray-900 mb-2.5">
+        <h3 className="text-sm font-semibold text-gray-900 mb-2.5">
           Monthly breakdown — {getCustomerName(selectedCustId)}
         </h3>
         <table className="w-full text-xs border-collapse">
@@ -339,7 +339,7 @@ export function UsageMetrics() {
               ].map((h) => (
                 <th
                   key={h}
-                  className="text-left px-2.5 py-[7px] text-[11px] font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                  className="text-center px-2.5 py-1.75 text-[11px] font-semibold uppercase tracking-wider text-gray-500 border-b border-gray-200 whitespace-nowrap"
                 >
                   {h}
                 </th>
@@ -348,8 +348,8 @@ export function UsageMetrics() {
           </thead>
           <tbody>
             {custData.map((u) => (
-              <tr key={u.month} className="hover:bg-gray-50">
-                <td className="px-2.5 py-2 border-b border-gray-100 font-medium">
+              <tr key={u.month} className="hover:bg-gray-50 text-center">
+                <td className="px-2.5 py-2 border-b border-gray-100 font-medium ">
                   {u.month}
                 </td>
                 <td className="px-2.5 py-2 border-b border-gray-100">

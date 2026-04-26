@@ -296,7 +296,7 @@ export function CustomerOverview() {
               ].map((h) => (
                 <th
                   key={h}
-                  className="text-left px-2.5 py-1.75 text-[11px] font-medium text-gray-500 border-b border-gray-200 whitespace-nowrap"
+                  className="text-left px-2.5 py-1.75 text-[11px] font-semibold uppercase tracking-wider text-gray-500 border-b border-gray-200 whitespace-nowrap"
                 >
                   {h}
                 </th>
