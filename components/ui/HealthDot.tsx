@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type { CustomerStatus } from "@/types";
 
 const DOT_COLOR: Record<CustomerStatus, string> = {
-  Healthy: "bg-[#639922]",
+  Active: "bg-[#639922]",
   "At Risk": "bg-[#BA7517]",
   Churned: "bg-[#E24B4A]",
 };

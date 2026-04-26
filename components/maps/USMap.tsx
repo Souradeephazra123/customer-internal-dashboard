@@ -1,4 +1,4 @@
-// src/components/maps/USMap.tsx
+
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -6,7 +6,6 @@ import * as d3 from "d3";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 import { CUSTOMERS } from "@/data/customer";
-import { STATE_COORDS } from "@/lib/constants";
 
 export function USMap() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,10 +33,10 @@ export function USMap() {
         if (!us) return;
         const path = d3.geoPath(proj);
         const states = feature(us, us.objects.states as any);
-        
-console.log(us.objects.states,"us objects states");
-console.log(states,"states");
-console.log(path,"path");
+
+        console.log(us.objects.states, "us objects states");
+        console.log(states, "states");
+        console.log(path, "path");
         svg
           .selectAll("path")
           .data((states as any).features)
@@ -48,19 +47,26 @@ console.log(path,"path");
           .attr("stroke-width", 0.5);
 
         CUSTOMERS.forEach((c) => {
-          const coord = STATE_COORDS[c.state];
-          if (!coord) return;
-          const xy = proj([coord[1], coord[0]]);
+          const xy = proj([c.longitude, c.latitude]);
           if (!xy) return;
 
           const color =
-            c.status === "Healthy"
+            c.status === "Active"
               ? "#1D9E75"
               : c.status === "At Risk"
-              ? "#BA7517"
-              : "#A32D2D";
-          const r = c.tier === "Enterprise" ? 7 : c.tier === "Growth" ? 5 : 4;
+                ? "#BA7517"
+                : "#A32D2D";
 
+          const r =
+            c.tier === "Enterprise"
+              ? 7
+              : c.tier === "Professional"
+                ? 6
+                : c.tier === "Growth"
+                  ? 5
+                  : 4;
+
+          
           svg
             .append("circle")
             .attr("cx", xy[0])
@@ -69,12 +75,13 @@ console.log(path,"path");
             .attr("fill", color)
             .attr("opacity", 0.85)
             .attr("stroke", "#fff")
-            .attr("stroke-width", 1);
+            .attr("stroke-width", 1)
+            .append("title")                                          
+            .text(`${c.companyName} · ${c.tier} · ${fmtMrr(c.mrr)}`);
         });
-
-        // Legend
+        
         const legend: [string, string][] = [
-          ["#1D9E75", "Healthy"],
+          ["#1D9E75", "Active"],
           ["#BA7517", "At Risk"],
           ["#A32D2D", "Churned"],
         ];
@@ -116,4 +123,9 @@ console.log(path,"path");
       <div ref={containerRef} className="w-full" />
     </div>
   );
+}
+
+
+function fmtMrr(n: number): string {
+  return `$${n.toLocaleString()}`;
 }

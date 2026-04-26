@@ -11,6 +11,13 @@ import {
 
 Chart.register(DoughnutController, ArcElement, Tooltip);
 
+
+const DEFAULT_COLORS = [
+  "#1D9E75", "#378ADD", "#BA7517", "#6B21A8",
+  "#E24B4A", "#888780", "#D4A017", "#2E8B57",
+];
+
+
 interface DoughnutChartProps {
   labels: string[];
   data: number[];
@@ -21,6 +28,10 @@ export function DoughnutChart({ labels, data, colors }: DoughnutChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<Chart | null>(null);
 
+
+  const chartColors = colors ?? labels.map((_, i) => DEFAULT_COLORS[i % DEFAULT_COLORS.length]);
+
+
   useEffect(() => {
     if (!canvasRef.current) return;
     chartRef.current?.destroy();
@@ -30,7 +41,7 @@ export function DoughnutChart({ labels, data, colors }: DoughnutChartProps) {
       datasets: [
         {
           data,
-          backgroundColor: colors,
+          backgroundColor: chartColors,
           borderWidth: 0,
         },
       ],
@@ -50,7 +61,7 @@ export function DoughnutChart({ labels, data, colors }: DoughnutChartProps) {
     return () => {
       chartRef.current?.destroy();
     };
-  }, [labels, data, colors]);
+  }, [labels, data, chartColors]);
 
   return (
     <div className="relative h-45">

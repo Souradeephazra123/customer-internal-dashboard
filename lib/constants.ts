@@ -9,10 +9,18 @@ export const TABS: TabDefinition[] = [
 ];
 
 export const CSM_LIST = [
+  "James Okafor",
   "Priya Nair",
-  "Marcus Lee",
-  "Sara Kim",
-  "Tom Okafor",
+  "Aisha Patel",
+  "Tom Bennett",
+  "Sofia Reyes",
+] as const;
+
+export const TIER_LIST = [
+  "Starter",
+  "Professional",
+  "Growth",
+  "Enterprise",
 ] as const;
 
 export const STATE_COORDS: Record<string, [number, number]> = {

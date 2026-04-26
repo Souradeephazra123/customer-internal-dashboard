@@ -1,7 +1,7 @@
 // src/components/ui/Badge.tsx
 import { cn } from "@/lib/utils";
 
-type BadgeVariant = "green" | "amber" | "red" | "blue" | "gray";
+type BadgeVariant = "green" | "amber" | "red" | "blue" | "gray" | "purple";
 
 const VARIANT_STYLES: Record<BadgeVariant, string> = {
   green: "bg-[#EAF3DE] text-[#3B6D11]",
@@ -9,6 +9,7 @@ const VARIANT_STYLES: Record<BadgeVariant, string> = {
   red: "bg-[#FCEBEB] text-[#A32D2D]",
   blue: "bg-[#E6F1FB] text-[#185FA5]",
   gray: "bg-[#F1EFE8] text-[#5F5E5A]",
+  purple: "bg-[#F0E6FB] text-[#6B21A8]",
 };
 
 interface BadgeProps {
@@ -34,13 +35,12 @@ export function Badge({ variant, children }: BadgeProps) {
 import type {
   CustomerStatus,
   CustomerTier,
-  ChurnRisk,
   TicketPriority,
   TicketStatus,
 } from "@/types";
 
 const STATUS_VARIANT: Record<CustomerStatus, BadgeVariant> = {
-  Healthy: "green",
+  Active: "green",      
   "At Risk": "amber",
   Churned: "red",
 };
@@ -51,6 +51,7 @@ export function StatusBadge({ status }: { status: CustomerStatus }) {
 
 const TIER_VARIANT: Record<CustomerTier, BadgeVariant> = {
   Enterprise: "blue",
+  Professional: "purple", 
   Growth: "green",
   Starter: "gray",
 };
@@ -59,16 +60,16 @@ export function TierBadge({ tier }: { tier: CustomerTier }) {
   return <Badge variant={TIER_VARIANT[tier]}>{tier}</Badge>;
 }
 
-const CHURN_VARIANT: Record<ChurnRisk, BadgeVariant> = {
-  Low: "green",
-  Medium: "amber",
-  High: "red",
-  Lost: "gray",
-};
+// const CHURN_VARIANT: Record<ChurnRisk, BadgeVariant> = {
+//   Low: "green",
+//   Medium: "amber",
+//   High: "red",
+//   Lost: "gray",
+// };
 
-export function ChurnBadge({ risk }: { risk: ChurnRisk }) {
-  return <Badge variant={CHURN_VARIANT[risk]}>{risk}</Badge>;
-}
+// export function ChurnBadge({ risk }: { risk: ChurnRisk }) {
+//   return <Badge variant={CHURN_VARIANT[risk]}>{risk}</Badge>;
+// }
 
 const PRIO_VARIANT: Record<TicketPriority, BadgeVariant> = {
   Critical: "red",
@@ -85,6 +86,8 @@ const TICKET_STATUS_VARIANT: Record<TicketStatus, BadgeVariant> = {
   Open: "amber",
   "In Progress": "blue",
   Resolved: "green",
+  "Waiting on Customer": "purple",   
+  "Escalated": "red",
 };
 
 export function TicketStatusBadge({ status }: { status: TicketStatus }) {
