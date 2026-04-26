@@ -15,7 +15,6 @@ ${n.toLocaleString()}`;
 }
 
 export function fmtMonthLabel(month: string): string {
-  // "2025-04" → "04/25"
   return `${month.slice(5)}/${month.slice(2, 4)}`;
 }
 
@@ -27,7 +26,6 @@ const MONTH_MAP: Record<string, string> = {
 };
 
 export function parseMonthToSortable(month: string): string {
-  // "Jan-25" → "2025-01"
   const [abbr, yr] = month.split("-");
   return `20${yr}-${MONTH_MAP[abbr] ?? "01"}`;
 }

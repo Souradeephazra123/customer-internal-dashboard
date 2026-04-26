@@ -1,138 +1,3 @@
-
-// "use client";
-
-// import { useEffect, useRef } from "react";
-// import * as d3 from "d3";
-// import { feature } from "topojson-client";
-// import type { Topology } from "topojson-specification";
-// import { CUSTOMERS } from "@/data/customer";
-
-// export function USMap() {
-//   const containerRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     const el = containerRef.current;
-//     if (!el) return;
-
-//     const w = el.offsetWidth || 640;
-//     const h = Math.round(w * 0.55);
-//     el.innerHTML = "";
-
-//     const svg = d3
-//       .select(el)
-//       .append("svg")
-//       .attr("viewBox", `0 0 ${w} ${h}`)
-//       .attr("width", "100%");
-
-//     const proj = d3.geoAlbersUsa().scale(w * 1.28).translate([w / 2, h / 2]);
-
-//     d3.json<Topology>(
-//       "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
-//     )
-//       .then((us) => {
-//         if (!us) return;
-//         const path = d3.geoPath(proj);
-//         const states = feature(us, us.objects.states as any);
-
-//         console.log(us.objects.states, "us objects states");
-//         console.log(states, "states");
-//         console.log(path, "path");
-//         svg
-//           .selectAll("path")
-//           .data((states as any).features)
-//           .join("path")
-//           .attr("d", path as any)
-//           .attr("fill", "#F1EFE8")
-//           .attr("stroke", "#D3D1C7")
-//           .attr("stroke-width", 0.5);
-
-//         CUSTOMERS.forEach((c) => {
-//           const xy = proj([c.longitude, c.latitude]);
-//           if (!xy) return;
-
-//           const color =
-//             c.status === "Active"
-//               ? "#1D9E75"
-//               : c.status === "At Risk"
-//                 ? "#BA7517"
-//                 : "#A32D2D";
-
-//           const r =
-//             c.tier === "Enterprise"
-//               ? 7
-//               : c.tier === "Professional"
-//                 ? 6
-//                 : c.tier === "Growth"
-//                   ? 5
-//                   : 4;
-
-          
-//           svg
-//             .append("circle")
-//             .attr("cx", xy[0])
-//             .attr("cy", xy[1])
-//             .attr("r", r)
-//             .attr("fill", color)
-//             .attr("opacity", 0.85)
-//             .attr("stroke", "#fff")
-//             .attr("stroke-width", 1)
-//             .append("title")                                          
-//             .text(`${c.companyName} · ${c.tier} · ${fmtMrr(c.mrr)}`);
-//         });
-        
-//         const legend: [string, string][] = [
-//           ["#1D9E75", "Active"],
-//           ["#BA7517", "At Risk"],
-//           ["#A32D2D", "Churned"],
-//         ];
-//         legend.forEach((l, i) => {
-//           svg
-//             .append("circle")
-//             .attr("cx", 14)
-//             .attr("cy", h - 60 + i * 18)
-//             .attr("r", 5)
-//             .attr("fill", l[0]);
-//           svg
-//             .append("text")
-//             .attr("x", 24)
-//             .attr("y", h - 56 + i * 18)
-//             .attr("fill", "#5F5E5A")
-//             .attr("font-size", 11)
-//             .text(l[1]);
-//         });
-
-//         svg
-//           .append("text")
-//           .attr("x", 14)
-//           .attr("y", h - 76)
-//           .attr("fill", "#888780")
-//           .attr("font-size", 10)
-//           .text("Circle size = tier · Color = status");
-//       })
-//       .catch(() => {
-//         el.innerHTML =
-//           '<p class="text-xs text-gray-500 p-2">Map unavailable</p>';
-//       });
-//   }, []);
-
-//   return (
-//     <div className="bg-white border border-gray-200 rounded-lg p-3.5 mt-4">
-//       <h3 className="text-[13px] font-medium text-gray-900 mb-2.5">
-//         US customer map
-//       </h3>
-//       <div ref={containerRef} className="w-full" />
-//     </div>
-//   );
-// }
-
-
-// function fmtMrr(n: number): string {
-//   return `$${n.toLocaleString()}`;
-// }
-
-
-
-// src/components/maps/USMap.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -175,7 +40,7 @@ export function USMap() {
     const w = el.offsetWidth || 640;
     const h = Math.round(w * 0.55);
 
-    // Clear previous render
+   
     const existing = el.querySelector("svg");
     if (existing) existing.remove();
 
@@ -196,7 +61,7 @@ export function USMap() {
         const path = d3.geoPath(proj);
         const states = feature(us, us.objects.states as any);
 
-        // Background
+        
         svg
           .append("rect")
           .attr("width", w)
@@ -204,7 +69,7 @@ export function USMap() {
           .attr("fill", "#FAFAF8")
           .attr("rx", 12);
 
-        // States
+      
         svg
           .selectAll("path")
           .data((states as any).features)
@@ -214,7 +79,7 @@ export function USMap() {
           .attr("stroke", "#D5D3CC")
           .attr("stroke-width", 0.5);
 
-        // Customer pins
+        
         CUSTOMERS.forEach((c) => {
           const xy = proj([c.longitude, c.latitude]);
           if (!xy) return;
@@ -222,7 +87,7 @@ export function USMap() {
           const color = STATUS_COLORS[c.status] ?? "#888";
           const r = TIER_RADIUS[c.tier] ?? 5;
 
-          // Outer glow ring
+          
           svg
             .append("circle")
             .attr("cx", xy[0])
@@ -231,7 +96,7 @@ export function USMap() {
             .attr("fill", color)
             .attr("opacity", 0.12);
 
-          // Main dot
+          
           const dot = svg
             .append("circle")
             .attr("cx", xy[0])
@@ -244,7 +109,7 @@ export function USMap() {
             .attr("filter", "drop-shadow(0 1px 2px rgba(0,0,0,0.15))")
             .style("transition", "r 0.15s ease, stroke-width 0.15s ease");
 
-          // Hover interaction — scale up + show tooltip
+          
           dot
             .on("mouseenter", function (event: MouseEvent) {
               d3.select(this)
@@ -284,7 +149,7 @@ export function USMap() {
 
   return (
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm mt-5 overflow-hidden">
-      {/* ---- Header ---- */}
+      
       <div className="px-5 pt-5 pb-3 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -319,7 +184,7 @@ export function USMap() {
           </p>
         </div>
 
-        {/* ---- Inline legend (HTML, not SVG) ---- */}
+        
         <div className="flex items-center gap-4">
           {[
             { color: STATUS_COLORS["Active"], label: "Active" },
@@ -343,9 +208,9 @@ export function USMap() {
         </div>
       </div>
 
-      {/* ---- Map container ---- */}
+     
       <div ref={containerRef} className="relative w-full px-3 pb-3">
-        {/* ---- Custom tooltip (HTML overlay) ---- */}
+       
         {tooltipData && (
           <div
             ref={tooltipRef}
@@ -357,11 +222,11 @@ export function USMap() {
             }}
           >
             <div className="bg-gray-900 text-white rounded-xl px-4 py-3 shadow-xl min-w-45">
-              {/* Arrow */}
+              
               <div
                 className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-gray-900 rotate-45 rounded-sm"
               />
-              {/* Content */}
+              
               <div className="relative">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span

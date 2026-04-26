@@ -1,5 +1,3 @@
-// src/components/ui/VehicleBar.tsx
-
 interface Segment {
   value: number;
   color: string;
@@ -30,7 +28,7 @@ export function VehicleBar({ segments, total }: VehicleBarProps) {
           ) : null
         )}
       </div>
-      {/* Hover tooltip */}
+   
       <div className="absolute bottom-full left-0 mb-2 hidden group-hover:flex bg-gray-900 text-white text-[10px] rounded-lg px-3 py-2 gap-3 whitespace-nowrap z-10 shadow-lg">
         {segments
           .filter((s) => s.value > 0)

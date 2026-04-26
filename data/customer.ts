@@ -1,4 +1,3 @@
-// src/data/customers.ts
 import { Customer } from "@/types";
 
 export const CUSTOMERS: Customer[] = [

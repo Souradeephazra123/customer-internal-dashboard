@@ -5407,47 +5407,26 @@ export const USAGE: UsageRecord[] = [
 
 ];
 
-// export function getUsageByCustomer(custId: number): UsageRecord[] {
-//   return USAGE.filter((u) => u.custId === custId).sort((a, b) =>
-//     a.month.localeCompare(b.month)
-//   );
-// }
-
-// export function getLatestMonthUsage(month = "2025-04"): UsageRecord[] {
-//   return USAGE.filter((u) => u.month === month);
-// }
-
-// export function getDistinctUsageCustomerIds(): number[] {
-//   return [...new Set(USAGE.map((u) => u.custId))];
-// }
-
-
-
-/** Get all usage rows for one customer, sorted chronologically */
 export function getUsageByCustomer(customerId: string): UsageRecord[] {
   return USAGE
     .filter((u) => u.customerId === customerId)
     .sort((a, b) => sortByMonth(a.month, b.month));
 }
 
-/** Get the latest month string across all data */
 export function getLatestMonth(): string {
   const sorted = [...new Set(USAGE.map((u) => u.month))].sort(sortByMonth);
   return sorted[sorted.length - 1] ?? "";
 }
 
-/** Get all records for the latest month */
 export function getLatestMonthUsage(): UsageRecord[] {
   const latest = getLatestMonth();
   return USAGE.filter((u) => u.month === latest);
 }
 
-/** Get distinct customer IDs that have usage data */
 export function getDistinctUsageCustomerIds(): string[] {
   return [...new Set(USAGE.map((u) => u.customerId))];
 }
 
-/** Get all distinct months, sorted chronologically */
 export function getAllMonths(): string[] {
   return [...new Set(USAGE.map((u) => u.month))].sort(sortByMonth);
 }

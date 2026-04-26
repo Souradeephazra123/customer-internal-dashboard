@@ -1,4 +1,3 @@
-// src/components/ui/Badge.tsx
 import { cn } from "@/lib/utils";
 
 type BadgeVariant = "green" | "amber" | "red" | "blue" | "gray" | "purple";
@@ -30,8 +29,6 @@ export function Badge({ variant, children }: BadgeProps) {
   );
 }
 
-// ----- convenience mappers -----
-
 import type {
   CustomerStatus,
   CustomerTier,
@@ -59,17 +56,6 @@ const TIER_VARIANT: Record<CustomerTier, BadgeVariant> = {
 export function TierBadge({ tier }: { tier: CustomerTier }) {
   return <Badge variant={TIER_VARIANT[tier]}>{tier}</Badge>;
 }
-
-// const CHURN_VARIANT: Record<ChurnRisk, BadgeVariant> = {
-//   Low: "green",
-//   Medium: "amber",
-//   High: "red",
-//   Lost: "gray",
-// };
-
-// export function ChurnBadge({ risk }: { risk: ChurnRisk }) {
-//   return <Badge variant={CHURN_VARIANT[risk]}>{risk}</Badge>;
-// }
 
 const PRIO_VARIANT: Record<TicketPriority, BadgeVariant> = {
   Critical: "red",

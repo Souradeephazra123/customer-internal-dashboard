@@ -1,4 +1,4 @@
-import { Ticket } from "@/types";
+import { Ticket, TicketPriority } from "@/types";
 
 export const TICKETS: Ticket[] = [
   
@@ -1101,24 +1101,21 @@ export function sortTicketsByPriority(tickets: Ticket[]): Ticket[] {
   );
 }
 
-/** Get all distinct channels from actual data */
 export function getDistinctChannels(): string[] {
   return [...new Set(TICKETS.map((t) => t.channel))];
 }
 
-/** Get all distinct statuses from actual data */
 export function getDistinctStatuses(): string[] {
   return [...new Set(TICKETS.map((t) => t.status))];
 }
 
-/** Get all distinct priorities from actual data */
 export function getDistinctPriorities(): string[] {
   const order = ["Critical", "High", "Medium", "Low"];
   const found = [...new Set(TICKETS.map((t) => t.priority))];
   return order.filter((p) => found.includes(p as TicketPriority));
 }
 
-/** Calculate age in days from createdDate to now */
+
 export function getTicketAgeDays(createdDate: string): number {
   const [month, day, year] = createdDate.split("/").map(Number);
   const created = new Date(year, month - 1, day);

@@ -449,7 +449,6 @@ export function getUseCaseCounts(): Record<string, number> {
   return countBy("primaryUseCase");
 }
 
-/** Get distinct values for a field — for dynamic filter dropdowns */
 export function getDistinctValues<K extends keyof FleetRecord>(
   field: K
 ): string[] {
